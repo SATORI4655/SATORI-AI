@@ -123,3 +123,50 @@ body {
     box-sizing: border-box; /* 余白込みで幅を計算 */
     z-index: 10; /* ロゴより手前に表示 */
 }
+/* 1. 基本的な文字とロゴのスタイル */
+.text-character, .brand-name {
+    display: inline-block;
+    opacity: 1;
+    position: relative;
+    /* 描画負荷を軽減し、GPUへ処理を委譲する */
+    will-change: transform, opacity, filter;
+    /* 散開時は弾けるように、収束時は一気に加速する緩急を定義 */
+    transition: transform 1.5s cubic-bezier(0.6, -0.28, 0.735, 0.045), 
+                opacity 1.2s ease-in-out, 
+                filter 1.2s ease-out;
+}
+
+/* 2. 散開（バラバラに散らばる）演出 */
+.text-character.is-scattering, .brand-name.is-scattering {
+    /* JSから注入される --rand-x, --rand-y, --rand-rot を使用 */
+    transform: translate(var(--rand-x), var(--rand-y)) rotate(var(--rand-rot));
+    filter: blur(2px);
+}
+
+/* 3. 潜航・収束（中心へダイブ）演出 */
+.text-character.is-diving, .brand-name.is-diving {
+    /* 完全に中心へ収束し、発光しながら霧散させる */
+    transform: translate(0, 0) scale(0.2);
+    opacity: 0 !important;
+    filter: blur(15px) brightness(2.0); 
+    pointer-events: none;
+}
+
+/* 追加：親コンテナの指定（必要に応じて） */
+.satori-container {
+    perspective: 1000px; /* 3D空間の奥行きを与える */
+    transform-style: preserve-3d;
+}
+.text-character {
+    display: inline-block;
+    will-change: transform, opacity, filter;
+    
+    /* 記憶の質感：輪郭を少しぼかし、光を滲ませる */
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 0 0 6px rgba(255, 255, 255, 0.5);
+    filter: blur(0.6px); /* これが「ボケ」の正体だ */
+    
+    transition: transform 1.5s cubic-bezier(0.22, 1, 0.36, 1), 
+                opacity 1.2s ease-in-out, 
+                filter 1.2s ease-out;
+}
