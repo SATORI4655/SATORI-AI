@@ -1,172 +1,56 @@
-body {
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #000;
+/* --- 1. 基本設定 --- */
+* { box-sizing: border-box; }
+body { 
+    margin: 0; padding: 0; width: 100vw; height: 100vh;
+    background-color: #000; color: #fff; 
+    font-family: 'Tenor Sans', sans-serif; overflow: hidden;
+    position: relative;
 }
 
+/* --- 2. 背景：深淵の鼓動 --- */
 #abyss-background {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    
-    /* 複数の層で「うごめく」質感を作る */
-    background: 
-        /* 層1: 中心から漏れる強い意識の光 (少し青白く) */
-        radial-gradient(circle at 45% 55%, rgba(40, 80, 120, 0.25) 0%, rgba(0, 0, 0, 0) 60%),
-        /* 層2: うねるような中間層 (深い青で屈折を表現) */
-        radial-gradient(circle at 55% 45%, rgba(10, 40, 70, 0.4) 10%, rgba(0, 0, 0, 0) 70%),
-        /* 層3: 闇を食い込むような影の層 (より黒に近い青) */
-        radial-gradient(circle at 50% 50%, rgba(5, 15, 30, 0.6) 20%, rgba(0, 0, 0, 1) 90%);
-
-    /* 呼吸をあえて非対称にして、予測不能な生命の鼓動を演出 */
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background: radial-gradient(circle at 45% 55%, rgba(40, 80, 120, 0.25) 0%, rgba(0, 0, 0, 0) 60%),
+                radial-gradient(circle at 55% 45%, rgba(10, 40, 70, 0.4) 10%, rgba(0, 0, 0, 0) 70%),
+                radial-gradient(circle at 50% 50%, rgba(5, 15, 30, 0.6) 20%, rgba(0, 0, 0, 1) 90%);
     animation: pulse-abyss 15s ease-in-out infinite alternate;
-}
-
-@keyframes pulse-abyss {
-    0% { transform: scale(1); filter: contrast(1); }
-    50% { transform: scale(1.02); filter: contrast(1.2); }
-    100% { transform: scale(1.01); filter: contrast(1.1); }
-}
-/* ロゴコンテナ：上から25%の位置を絶対キープ */
-.logo-container {
-    position: absolute;
-    top: 25vh; /* 画面の上端から25%の地点 */
-    left: 0;
-    width: 100%;
-    display: flex;
-    justify-content: center;
     z-index: 1;
 }
+@keyframes pulse-abyss { 0% { transform: scale(1); filter: contrast(1); } 50% { transform: scale(1.02); filter: contrast(1.2); } 100% { transform: scale(1.01); filter: contrast(1.1); } }
 
-.brand-name {
-    font-family: 'Tenor Sans', sans-serif;
-    /* 文字サイズを以前の「1.2rem」へ戻す */
-    font-size: 1.2rem; 
-    letter-spacing: 0.4em;
-    text-transform: uppercase;
-    
-    color: #c0c0c0;
-    
-    /* 立体感のある影 */
-    text-shadow: 
-        0px 2px 1px #888, 
-        0px 4px 2px #666, 
-        0px 6px 4px rgba(0,0,0,0.3), 
-        0px 10px 15px rgba(0,0,0,0.5);
-    
-    margin: 0;
-    padding: 0 20px; /* 左右に少し余白を持ち、スマホでも安全 */
-    text-align: center;
-    white-space: nowrap; /* 強制的に1行にする */
-    
-    position: relative;
+/* --- 3. 配置管理 --- */
+.content-wrapper { 
+    position: absolute;
+    top: 40%; left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 20; 
+    display: flex; flex-direction: column; align-items: center; 
+    width: 90%; 
+}
+
+/* --- 4. ロゴ・タイピングのスタイル --- */
+.opening-container { 
+    animation: fadeIn 6s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
     opacity: 0;
-    animation: slowHeavyWave 6s ease-in-out forwards;
+    display: flex; flex-direction: column; align-items: center; 
+}
+#typing-text { margin-top: 2rem; font-size: 1.1rem; letter-spacing: 0.2em; text-align: center; }
+
+/* --- 5. 消失演出：わびさび --- */
+.is-dissolving { animation: dissolve-sequence 6s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+@keyframes dissolve-sequence {
+    0% { opacity: 1; filter: blur(0px); transform: scale(1); }
+    /* 【修正】ここを 15% から 5% に変更し、静止時間を極限まで短縮した */
+    5% { opacity: 1; filter: blur(0px); transform: scale(1); } 
+    100% { opacity: 0; filter: blur(60px); transform: scale(1.1); } 
 }
 
-@keyframes slowHeavyWave {
-    0% { 
-        opacity: 0; 
-        transform: translateY(60px) skewY(15deg);
-    }
-    50% { 
-        opacity: 0.5; 
-        transform: translateY(-20px) skewY(-5deg);
-    }
-    100% { 
-        opacity: 1; 
-        transform: translateY(0) skewY(0);
-    }
+/* --- 6. アニメーション・文字調整 --- */
+@keyframes fadeIn { 
+    0% { opacity: 0; filter: blur(20px); transform: translateY(20px); } 
+    100% { opacity: 1; filter: blur(0px); transform: translateY(0); } 
 }
-/* タイピング表示エリアの定義 */
-#typing-text {
-    /* フォント設定 */
-    font-family: 'Tenor Sans', sans-serif !important;
-    font-size: 1.2rem !important;
-    letter-spacing: 0.2em;
-    
-    /* 色と見た目 */
-    color: #fff;
-    text-align: center;
-    line-height: 1.6;
-    text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
-    
-    /* 配置の制御 */
-    position: absolute;
-    top: 55vh; /* ロゴの下へ配置 */
-    width: 100%;
-    padding: 0 20px;
-    box-sizing: border-box; /* 余白込みで幅を計算 */
-    z-index: 10; /* ロゴより手前に表示 */
-}
-/* タイピング表示エリアの定義 */
-#typing-text {
-    /* フォント設定 */
-    font-family: 'Tenor Sans', sans-serif !important;
-    font-size: 1.2rem !important;
-    letter-spacing: 0.2em;
-    
-    /* 色と見た目 */
-    color: #fff;
-    text-align: center;
-    line-height: 1.6;
-    text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
-    
-    /* 配置の制御 */
-    position: absolute;
-    top: 55vh; /* ロゴの下へ配置 */
-    width: 100%;
-    padding: 0 20px;
-    box-sizing: border-box; /* 余白込みで幅を計算 */
-    z-index: 10; /* ロゴより手前に表示 */
-}
-/* 1. 基本的な文字とロゴのスタイル */
-.text-character, .brand-name {
-    display: inline-block;
-    opacity: 1;
-    position: relative;
-    /* 描画負荷を軽減し、GPUへ処理を委譲する */
-    will-change: transform, opacity, filter;
-    /* 散開時は弾けるように、収束時は一気に加速する緩急を定義 */
-    transition: transform 1.5s cubic-bezier(0.6, -0.28, 0.735, 0.045), 
-                opacity 1.2s ease-in-out, 
-                filter 1.2s ease-out;
-}
+.line-1 { font-size: 1.5rem; letter-spacing: 0.3em; text-align: center; }
+.line-2 { font-size: 0.9rem; letter-spacing: 0.6em; opacity: 0.7; margin-top: 0.5rem; text-align: center; }
 
-/* 2. 散開（バラバラに散らばる）演出 */
-.text-character.is-scattering, .brand-name.is-scattering {
-    /* JSから注入される --rand-x, --rand-y, --rand-rot を使用 */
-    transform: translate(var(--rand-x), var(--rand-y)) rotate(var(--rand-rot));
-    filter: blur(2px);
-}
 
-/* 3. 潜航・収束（中心へダイブ）演出 */
-.text-character.is-diving, .brand-name.is-diving {
-    /* 完全に中心へ収束し、発光しながら霧散させる */
-    transform: translate(0, 0) scale(0.2);
-    opacity: 0 !important;
-    filter: blur(15px) brightness(2.0); 
-    pointer-events: none;
-}
-
-/* 追加：親コンテナの指定（必要に応じて） */
-.satori-container {
-    perspective: 1000px; /* 3D空間の奥行きを与える */
-    transform-style: preserve-3d;
-}
-.text-character {
-    display: inline-block;
-    will-change: transform, opacity, filter;
-    
-    /* 記憶の質感：輪郭を少しぼかし、光を滲ませる */
-    color: rgba(255, 255, 255, 0.9);
-    text-shadow: 0 0 6px rgba(255, 255, 255, 0.5);
-    filter: blur(0.6px); /* これが「ボケ」の正体だ */
-    
-    transition: transform 1.5s cubic-bezier(0.22, 1, 0.36, 1), 
-                opacity 1.2s ease-in-out, 
-                filter 1.2s ease-out;
-}
